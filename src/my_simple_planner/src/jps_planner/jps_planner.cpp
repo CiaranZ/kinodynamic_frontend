@@ -10,7 +10,7 @@ JPSPlanner<Dim>::JPSPlanner(bool verbose): planner_verbose_(verbose) {
 
 template<int Dim>
 void JPSPlanner<Dim>::setParam(ros::NodeHandle& nh){
-  nh.param("world_frame_id",world_frame_id,std::string("/world_enu"));
+  nh.param("world_frame_id",world_frame_id,std::string("world"));
   /*visualization*/
   rawpath_jps_pub_ = nh.advertise<nav_msgs::Path>("/rawpath_jps_vis",1);
   optipath_jps_pub_ = nh.advertise<nav_msgs::Path>("/optipath_jps_vis",1);
@@ -27,8 +27,6 @@ void JPSPlanner<Dim>::map_update_timer_cb(const ros::TimerEvent& event){
   if(has_map){
     return;}
   if(!map_util_set) {
-    return;}
-  if(!map_util_->has_map_()) {
     return;}
   updateMap();
   has_map = true;
@@ -121,7 +119,7 @@ vec_Vecf<Dim> JPSPlanner<Dim>::samplePath(const vec_Vecf<Dim> & path){
   vec_Vecf<Dim> new_path;
   new_path.push_back(path.front());
   Veci<Dim> last_index =  map_util_->floatToInt(path.front());
-  for(int i=0;i<path.size()-1;i++){
+  for(size_t i=0;i<path.size()-1;i++){
     //i i+1
     Vecf<Dim> p1 = path[i];
     Vecf<Dim> p2 = path[i+1];
@@ -174,7 +172,7 @@ void publish_rawpath();
 template<int Dim>
 void JPSPlanner<Dim>::publish_rawpath(){
   nav_msgs::Path path_msg;
-  for(int i = 0;i<raw_path_.size();i++){
+  for(size_t i = 0;i<raw_path_.size();i++){
         geometry_msgs::PoseStamped pt;
         pt.pose.position.x =  raw_path_[i](0);
         pt.pose.position.y =  raw_path_[i](1);
@@ -188,7 +186,7 @@ void JPSPlanner<Dim>::publish_rawpath(){
 template<int Dim>
 void JPSPlanner<Dim>::publish_optipath(){
   nav_msgs::Path path_msg;
-  for(int i = 0;i<path_.size();i++){
+  for(size_t i = 0;i<path_.size();i++){
       geometry_msgs::PoseStamped pt;
       pt.pose.position.x =  path_[i][0];
       pt.pose.position.y =  path_[i][1];
@@ -224,7 +222,7 @@ void JPSPlanner<Dim>::publish_keygrid(){
     grid_vis.type = visualization_msgs::Marker::CUBE_LIST;
     grid_vis.points.clear();
     geometry_msgs::Point pt;
-    for(int i=0;i<raw_path_.size();i++){
+    for(size_t i=0;i<raw_path_.size();i++){
         pt.x = raw_path_[i](0);
         pt.y = raw_path_[i](1);
         pt.z = raw_path_[i](2);
@@ -234,17 +232,19 @@ void JPSPlanner<Dim>::publish_keygrid(){
 }
 template<int Dim>
 void JPSPlanner<Dim>::publish_samplepath(){
-   if(sample_path_.size()<1)
-        return ;
+   if(sample_path_.size()<1){
+      std::cout << "sample path is empty" << std::endl;
+      return;
+   }
+        
     visualization_msgs::Marker grid_vis;
     grid_vis.header.stamp       = ros::Time::now();
     grid_vis.header.frame_id    = world_frame_id;
-    grid_vis.ns = "jps/sample";
     grid_vis.action = visualization_msgs::Marker::ADD;
     //_vis_traj_width = 0.05;
-    grid_vis.scale.x = 0.1;
-    grid_vis.scale.y = 0.1;
-    grid_vis.scale.z = 0.1;
+    grid_vis.scale.x = 0.05;
+    grid_vis.scale.y = 0.05;
+    grid_vis.scale.z = 0.05;
     grid_vis.pose.orientation.x = 0.0;
     grid_vis.pose.orientation.y = 0.0;
     grid_vis.pose.orientation.z = 0.0;
@@ -256,11 +256,14 @@ void JPSPlanner<Dim>::publish_samplepath(){
     grid_vis.color.b = 0.0;//purple
     grid_vis.type = visualization_msgs::Marker::CUBE_LIST;
     grid_vis.points.clear();
+
     geometry_msgs::Point pt;
-    for(int i=0;i<sample_path_.size();i++){
+    std::cout << sample_path_.size() << std::endl;
+    for(size_t i=0;i<sample_path_.size();i++){
         pt.x = sample_path_[i](0);
         pt.y = sample_path_[i](1);
         pt.z = sample_path_[i](2);
+        std::cout << "path point" <<  pt.x << " " << pt.y << " " << pt.z << std::endl;
         grid_vis.points.push_back(pt);
     }
     sample_path_jps_pub_.publish(grid_vis);

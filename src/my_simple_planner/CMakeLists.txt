@@ -112,6 +112,9 @@ add_library(libkinodyn_rrt_star src/kinodyn_rrt_star/kinodyn_rrt_star.cpp)
 
 add_library(libkdtree src/kdtree/kdtree.cpp)
 
+add_library(libjps_planner src/jps_planner/jps_planner.cpp
+                            src/jps_planner/graph_search.cpp)
+
 # add_library( libjps_planner src/jps_planner/graph_search.cpp
 # src/jps_planner/jps_planner.cpp )
 
@@ -127,6 +130,7 @@ add_library(libkdtree src/kdtree/kdtree.cpp)
 # packages don't collide
 add_executable(test_esdf_node test/test_esdf.cpp)
 add_executable(test_kino_rrt_star_node test/test_kino_rrt_star.cpp)
+add_executable(test_jps_node test/test_jps.cpp)
 
 # Rename C++ executable without prefix The above recommended prefix causes long
 # target names, the following renames the target back to the shorter version for
@@ -147,6 +151,8 @@ target_link_libraries(libkinodyn_rrt_star ${catkin_LIBRARIES} libkdtree)
 
 target_link_libraries(test_kino_rrt_star_node ${catkin_LIBRARIES} libkdtree
                       libkinodyn_rrt_star)
+
+target_link_libraries(test_jps_node ${catkin_LIBRARIES} libjps_planner libkdtree)
 # ##############################################################################
 # Install ##
 # ##############################################################################

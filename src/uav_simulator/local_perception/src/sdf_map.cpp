@@ -47,8 +47,9 @@ inline bool SDFMap::isInMap(Eigen::Vector3d pos)
 
 inline void SDFMap::posToIndex(Eigen::Vector3d pos, Eigen::Vector3i& id)
 {
-  for (int i = 0; i < 3; ++i)
+  for (int i = 0; i < 3; ++i){
     id(i) = floor((pos(i) - origin(i)) * resolution_inv);
+  }
 }
 
 inline void SDFMap::indexToPos(Eigen::Vector3i id, Eigen::Vector3d& pos)
@@ -358,6 +359,21 @@ void SDFMap::updateESDF3d()
         else
           distance_buffer_all[idx] = distance_buffer[idx];
       }
+}
+
+Eigen::Vector3d SDFMap::getOrigin()
+{
+  return origin;
+}
+
+Eigen::Vector3d SDFMap::getSize()
+{
+  return map_size;
+}
+
+double SDFMap::getResolution()
+{
+  return resolution;
 }
 
 bool SDFMap::tryFillMinima(const Eigen::Vector3d& pt, Eigen::Vector3d& center, Eigen::Vector3d& cube_len)

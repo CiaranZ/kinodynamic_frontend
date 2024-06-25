@@ -9,8 +9,6 @@ Panels:
         - /drone01/Planning1/drone_path1/Offset1
         - /drone01/Mapping1/map_inflate1
         - /drone01/Simulation1/robot1
-        - /Marker1
-        - /PointCloud21
       Splitter Ratio: 0.554430365562439
     Tree Height: 992
   - Class: rviz/Selection
@@ -31,7 +29,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: simulation_map
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -278,22 +276,14 @@ Visualization Manager:
           Name: Simulation
       Enabled: true
       Name: drone0
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /planner/trajectory_lib
-      Name: MarkerArray
-      Namespaces:
-        {}
-      Queue Size: 1
-      Value: true
     - Class: rviz/Marker
-      Enabled: true
+      Enabled: false
       Marker Topic: /drone_0/test_kino_rrt_star/RRTStar_path_vis
       Name: Marker
       Namespaces:
         {}
       Queue Size: 5
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -306,7 +296,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -321,6 +311,50 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /planner/trajectory_lib
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 2.575000047683716
+        Min Value: 0.02500000037252903
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.05000000074505806
+      Style: Flat Squares
+      Topic: /sdf_map/occupancy_inflate
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /sample_path_jps_vis
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
@@ -360,10 +394,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 48.87112808227539
+      Scale: 83.68589782714844
       Target Frame: <Fixed Frame>
-      X: 3.220569133758545
-      Y: 2.764390468597412
+      X: 1.1768866777420044
+      Y: -0.027911897748708725
     Saved:
       - Class: rviz/FPS
         Enable Stereo Rendering:
@@ -433,6 +467,6 @@ Window Geometry:
     collapsed: false
   Width: 1440
   X: 2454
-  Y: 570
+  Y: 0
   depth:
     collapsed: false

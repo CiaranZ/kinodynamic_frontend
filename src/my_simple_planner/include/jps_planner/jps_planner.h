@@ -7,18 +7,11 @@
 
 #include <jps_planner/data_type.h>
 #include <jps_planner/graph_search.h>
-#include <jps_collision/map_util.h>
+#include <jps_planner/map_util.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <visualization_msgs/Marker.h>
 #include <ros/console.h>
 #include <ros/ros.h>
-#include <octomap_msgs/Octomap.h>
-#include <octomap_msgs/GetOctomap.h>
-#include <octomap_msgs/BoundingBoxQuery.h>
-#include <octomap_msgs/conversions.h>
-#include <octomap_ros/conversions.h>
-#include <octomap/octomap.h>
-#include <octomap/OcTreeKey.h>
-#include <octomap_server/OctomapServer.h>
 #include <map>
 #include <nav_msgs/Path.h>
 #include <string>

@@ -80,6 +80,11 @@ public:
   void getSliceESDF(const double height, const double res, Eigen::Vector4d range, vector<Eigen::Vector3d> &slice,
                     vector<Eigen::Vector3d> &grad,
                     int sign = 1); // 1 pos, 2 neg, 3 combined
+  /* ---------- */
+
+  Eigen::Vector3d getOrigin();
+  Eigen::Vector3d getSize();
+  double  getResolution();
 
   /* ---------- try to fill local minima ---------- */
   vector<Eigen::Vector3d> findPeaks(const Eigen::Vector3d &pt);
