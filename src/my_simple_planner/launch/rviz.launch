@@ -1,3 +1,28 @@
 <launch>
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find my_simple_planner)/config/default.rviz" required="true" />
+  <arg name="obj_num" value="10" />
+  <arg name="drone_id" value="0" />
+
+  <arg name="map_size_x" value="5.0" />
+  <arg name="map_size_y" value="10.0" />
+  <arg name="map_size_z" value="3.0" />
+  <arg name="odom_topic" value="visual_slam/odom" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find my_simple_planner)/config/default.rviz" required="true" >
+      <rosparam command="load" file="$(find my_simple_planner)/config/esdf.yaml" />
+      <remap from="/sdf_map/cloud" to="/map_generator/global_cloud" />
+  </node>
+
+  <include file="$(find my_simple_planner)/launch/simulator.xml">
+    <arg name="drone_id" value="$(arg drone_id)" />
+    <arg name="map_size_x_" value="$(arg map_size_x)" />
+    <arg name="map_size_y_" value="$(arg map_size_y)" />
+    <arg name="map_size_z_" value="$(arg map_size_z)" />
+    <arg name="init_x_" value="-1.9" />
+    <arg name="init_y_" value="4.5" />
+    <arg name="init_z_" value="0.0" />
+    <arg name="min_dist" value="0.8" />
+    <arg name="p_num" value="100.0" />
+    <arg name="c_num" value="100.0" />
+    <arg name="odometry_topic" value="$(arg odom_topic)" />
+  </include>
 </launch>

@@ -1,9 +1,9 @@
 sdf_map:
     resolution: 0.05
-    local_radius_x: 50.0 
-    local_radius_y: 50.0 
-    local_radius_z: 5.0 
-    inflate_val: 0.15 
+    local_radius_x: 5.0 
+    local_radius_y: 10.0 
+    local_radius_z: 3.0 
+    inflate_val: 0.1 
     esdf_inflate: 0.075
     local_map_margin: 0
     ground_z: 0.0

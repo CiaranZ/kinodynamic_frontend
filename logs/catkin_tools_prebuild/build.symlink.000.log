@@ -1,0 +1,12 @@
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./setup.zsh
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./local_setup.sh
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./local_setup.bash
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./env.sh
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./_setup_util.py
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./setup.bash
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./setup.sh
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./cmake.lock
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/./local_setup.zsh
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig-version.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/pkgconfig/catkin_tools_prebuild.pc

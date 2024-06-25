@@ -1,0 +1,16 @@
+[  0%] Built target multi_map_server_generate_messages_cpp
+[  7%] [34m[1mGenerating src/moc_probmap_display.cpp[0m
+[ 14%] [34m[1mGenerating src/moc_aerialmap_display.cpp[0m
+[ 28%] [34m[1mGenerating src/moc_multi_probmap_display.cpp[0m
+[ 28%] [34m[1mGenerating src/moc_goal_tool.cpp[0m
+[ 35%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/pose_tool.cpp.o[0m
+[ 42%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/probmap_display.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/multi_probmap_display.cpp.o[0m
+[ 64%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/moc_goal_tool.cpp.o[0m
+[ 64%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/goal_tool.cpp.o[0m
+[ 71%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/aerialmap_display.cpp.o[0m
+[ 78%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/moc_aerialmap_display.cpp.o[0m
+[ 85%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/moc_multi_probmap_display.cpp.o[0m
+[ 92%] [32mBuilding CXX object CMakeFiles/rviz_plugins.dir/src/moc_probmap_display.cpp.o[0m
+[100%] [32m[1mLinking CXX shared library /home/chunxin/PF/kinodynamic_frontend/devel/.private/rviz_plugins/lib/librviz_plugins.so[0m
+[100%] Built target rviz_plugins

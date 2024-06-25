@@ -41,6 +41,7 @@ private:
   void maze2D();
   void randomMapGenerate();
   void Maze3DGen();
+  void pcd2ros();
   void recursiveDivision(int xl, int xh, int yl, int yh, Eigen::MatrixXi &maze);
   void recursizeDivisionMaze(Eigen::MatrixXi &maze);
   void optimizeMap();

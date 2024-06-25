@@ -330,7 +330,7 @@ void odom_callback(const nav_msgs::Odometry::ConstPtr& msg)
   meshROS.header.stamp = msg->header.stamp; 
   meshROS.ns = "mesh";
   meshROS.id = 0;
-  meshROS.type = visualization_msgs::Marker::MESH_RESOURCE;
+  meshROS.type = visualization_msgs::Marker::CUBE;
   meshROS.action = visualization_msgs::Marker::ADD;
   meshROS.pose.position.x = msg->pose.pose.position.x;
   meshROS.pose.position.y = msg->pose.pose.position.y;
@@ -349,9 +349,9 @@ void odom_callback(const nav_msgs::Odometry::ConstPtr& msg)
   meshROS.pose.orientation.x = q(1);
   meshROS.pose.orientation.y = q(2);
   meshROS.pose.orientation.z = q(3);
-  meshROS.scale.x = scale;
-  meshROS.scale.y = scale;
-  meshROS.scale.z = scale;
+  meshROS.scale.x = 0.6;
+  meshROS.scale.y = 0.2;
+  meshROS.scale.z = 0.2;
   meshROS.color.a = color_a;
   meshROS.color.r = color_r;
   meshROS.color.g = color_g;

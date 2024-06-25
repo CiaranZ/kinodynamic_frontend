@@ -1,0 +1,14 @@
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/mockamap/src/maps.cpp:[m[K In member function ‘[01m[Kvoid mocka::Maps::pcd2ros()[m[K’:
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/mockamap/src/maps.cpp:683:3:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K,[m[K’ or ‘[01m[K;[m[K’ before ‘[01m[Kpcl[m[K’
+  683 |   [01;31m[Kpcl[m[K::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+      |   [01;31m[K^~~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/mockamap/src/maps.cpp:684:54:[m[K [01;31m[Kerror: [m[K‘[01m[Kcloud[m[K’ was not declared in this scope
+  684 |   if (pcl::io::loadPCDFile<pcl::PointXYZ>(filename, *[01;31m[Kcloud[m[K) == -1)
+      |                                                      [01;31m[K^~~~~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/mockamap/src/maps.cpp:689:16:[m[K [01;31m[Kerror: [m[K‘[01m[Kcloud[m[K’ was not declared in this scope
+  689 |   info.cloud = [01;31m[Kcloud[m[K;
+      |                [01;31m[K^~~~~[m[K
+make[2]: *** [CMakeFiles/mockamap_node.dir/build.make:90: CMakeFiles/mockamap_node.dir/src/maps.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:2374: CMakeFiles/mockamap_node.dir/all] Error 2
+make: *** [Makefile:146: all] Error 2

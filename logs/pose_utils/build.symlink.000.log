@@ -1,0 +1,4 @@
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/pose_utils/cmake/pose_utilsConfig-version.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/pose_utils/cmake/pose_utilsConfig.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/libpose_utils.so
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/pkgconfig/pose_utils.pc

@@ -676,6 +676,22 @@ Maps::maze2D()
   pcl2ros();
 }
 
+
+void Maps::pcd2ros()
+{
+  std::string filename = "/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/mockamap/src/map.pcd"; 
+  pcl::PointCloud<pcl::PointXYZ> cloud;
+  if (pcl::io::loadPCDFile<pcl::PointXYZ>(filename, cloud) == -1)
+  {
+    ROS_ERROR("Couldn't read file %s", filename.c_str());
+    return;
+  }
+  info.cloud = &cloud;
+  info.cloud->width = info.cloud->points.size();
+  info.cloud->height = 1;
+  info.cloud->is_dense = true;
+  pcl2ros();
+}
 Maps::BasicInfo
 Maps::getInfo() const
 {
@@ -711,6 +727,9 @@ Maps::generate(int type)
     case 4: // generating 3d maze
       std::srand(info.seed);
       Maze3DGen();
+      break;
+    case 5:
+      pcd2ros();
       break;
   }
 }

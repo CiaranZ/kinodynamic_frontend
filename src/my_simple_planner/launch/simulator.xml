@@ -41,7 +41,7 @@
     <param name="min_distance" value="$(arg min_dist)"/>         
   </node> -->
 
-  <node pkg="mockamap" type="mockamap_node" name="mockamap_node" output="screen">  
+  <!-- <node pkg="mockamap" type="mockamap_node" name="mockamap_node" output="screen">  
       <remap from="/mock_map" to="/map_generator/global_cloud"/>
 
       <param name="seed" type="int" value="121"/>
@@ -59,8 +59,12 @@
       <param name="fill"          type="double" value="0.12"/>
       <param name="fractal"       type="int"    value="1"/>
       <param name="attenuation"   type="double" value="0.1"/>
-  </node>
+  </node> -->
+  <node pkg="mockamap" type="mockamap_node" name="mockamap_node" output="screen">  
+      <remap from="/mock_map" to="/map_generator/global_cloud"/>
+      <param name="type" type="int" value="5"/>
 
+  </node>
   
   <!-- <node pkg="so3_quadrotor_simulator" type="quadrotor_simulator_so3" name="drone_$(arg drone_id)_quadrotor_simulator_so3" output="screen">
         <param name="rate/odom" value="200.0"/>

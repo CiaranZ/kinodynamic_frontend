@@ -1,0 +1,6 @@
+Linked: (/home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_control/share/so3_control/cmake/so3_controlConfig.cmake, /home/chunxin/PF/kinodynamic_frontend/devel/share/so3_control/cmake/so3_controlConfig.cmake)
+Linked: (/home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_control/share/so3_control/cmake/so3_controlConfig-version.cmake, /home/chunxin/PF/kinodynamic_frontend/devel/share/so3_control/cmake/so3_controlConfig-version.cmake)
+Linked: (/home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_control/lib/libSO3Control.so, /home/chunxin/PF/kinodynamic_frontend/devel/lib/libSO3Control.so)
+Linked: (/home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_control/lib/libso3_control_nodelet.so, /home/chunxin/PF/kinodynamic_frontend/devel/lib/libso3_control_nodelet.so)
+Linked: (/home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_control/lib/so3_control/control_example, /home/chunxin/PF/kinodynamic_frontend/devel/lib/so3_control/control_example)
+Linked: (/home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_control/lib/pkgconfig/so3_control.pc, /home/chunxin/PF/kinodynamic_frontend/devel/lib/pkgconfig/so3_control.pc)

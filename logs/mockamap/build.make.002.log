@@ -1,0 +1,10 @@
+[ 20%] [32mBuilding CXX object CMakeFiles/mockamap_node.dir/src/maps.cpp.o[0m
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/mockamap/src/maps.cpp:[m[K In member function ‘[01m[Kvoid mocka::Maps::pcd2ros()[m[K’:
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/mockamap/src/maps.cpp:689:16:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[Kpcl::PointCloud<pcl::PointXYZ>::Ptr[m[K’ {aka ‘[01m[Kboost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >[m[K’} to ‘[01m[Kpcl::PointCloud<pcl::PointXYZ>*[m[K’ in assignment
+  689 |   info.cloud = [01;31m[Kcloud[m[K;
+      |                [01;31m[K^~~~~[m[K
+      |                [01;31m[K|[m[K
+      |                [01;31m[Kpcl::PointCloud<pcl::PointXYZ>::Ptr {aka boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >}[m[K
+make[2]: *** [CMakeFiles/mockamap_node.dir/build.make:90: CMakeFiles/mockamap_node.dir/src/maps.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:2374: CMakeFiles/mockamap_node.dir/all] Error 2
+make: *** [Makefile:146: all] Error 2

@@ -1,0 +1,6 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/quadrotor_dynamics.dir/src/dynamics/Quadrotor.cpp.o[0m
+[ 50%] [32m[1mLinking CXX shared library /home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_quadrotor_simulator/lib/libquadrotor_dynamics.so[0m
+[ 50%] Built target quadrotor_dynamics
+[ 75%] [32mBuilding CXX object CMakeFiles/quadrotor_simulator_so3.dir/src/quadrotor_simulator_so3.cpp.o[0m
+[100%] [32m[1mLinking CXX executable /home/chunxin/PF/kinodynamic_frontend/devel/.private/so3_quadrotor_simulator/lib/so3_quadrotor_simulator/quadrotor_simulator_so3[0m
+[100%] Built target quadrotor_simulator_so3

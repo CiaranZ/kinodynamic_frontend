@@ -1,0 +1,8 @@
+[ 33%] [32mBuilding CXX object CMakeFiles/local_map.dir/src/raycast.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/local_map.dir/src/sdf_map.cpp.o[0m
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/local_perception/src/sdf_map.cpp:[m[K In member function ‘[01m[Kvoid SDFMap::checkDist()[m[K’:
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/local_perception/src/sdf_map.cpp:1581:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdist[m[K’ [[01;35m[K-Wunused-variable[m[K]
+ 1581 |         double [01;35m[Kdist[m[K = getDistWithGradTrilinear(pos, grad);
+      |                [01;35m[K^~~~[m[K
+[100%] [32m[1mLinking CXX shared library /home/chunxin/PF/kinodynamic_frontend/devel/.private/local_map/lib/liblocal_map.so[0m
+[100%] Built target local_map

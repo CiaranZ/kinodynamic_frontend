@@ -1,0 +1,5 @@
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/so3_quadrotor_simulator/cmake/so3_quadrotor_simulatorConfig-version.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/so3_quadrotor_simulator/cmake/so3_quadrotor_simulatorConfig.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/libquadrotor_dynamics.so
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/so3_quadrotor_simulator/quadrotor_simulator_so3
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/pkgconfig/so3_quadrotor_simulator.pc

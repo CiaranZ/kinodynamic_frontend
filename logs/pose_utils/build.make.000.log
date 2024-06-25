@@ -1,0 +1,62 @@
+[ 50%] [32mBuilding CXX object CMakeFiles/pose_utils.dir/src/pose_utils.cpp.o[0m
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:[m[K In function ‘[01m[Karma::mat jacobianF(const colvec&, const colvec&, double)[m[K’:
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:320:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  320 |   double [01;35m[Kx[m[K  = X(0);
+      |          [01;35m[K^[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:321:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ky[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  321 |   double [01;35m[Ky[m[K  = X(1);
+      |          [01;35m[K^[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:322:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kz[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  322 |   double [01;35m[Kz[m[K  = X(2);
+      |          [01;35m[K^[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:326:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kvx[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  326 |   double [01;35m[Kvx[m[K = X(6);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:327:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kvy[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  327 |   double [01;35m[Kvy[m[K = X(7);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:328:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kvz[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  328 |   double [01;35m[Kvz[m[K = X(8);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:332:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kwx[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  332 |   double [01;35m[Kwx[m[K = U(3);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:[m[K In function ‘[01m[Karma::mat jacobianU(const colvec&, const colvec&, double)[m[K’:
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:434:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kx[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  434 |   double [01;35m[Kx[m[K  = X(0);
+      |          [01;35m[K^[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:435:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ky[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  435 |   double [01;35m[Ky[m[K  = X(1);
+      |          [01;35m[K^[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:436:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kz[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  436 |   double [01;35m[Kz[m[K  = X(2);
+      |          [01;35m[K^[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:440:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kvx[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  440 |   double [01;35m[Kvx[m[K = X(6);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:441:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kvy[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  441 |   double [01;35m[Kvy[m[K = X(7);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:442:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kvz[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  442 |   double [01;35m[Kvz[m[K = X(8);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:443:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kax[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  443 |   double [01;35m[Kax[m[K = U(0);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:444:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kay[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  444 |   double [01;35m[Kay[m[K = U(1);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:445:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kaz[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  445 |   double [01;35m[Kaz[m[K = U(2);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:446:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kwx[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  446 |   double [01;35m[Kwx[m[K = U(3);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:447:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kwy[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  447 |   double [01;35m[Kwy[m[K = U(4);
+      |          [01;35m[K^~[m[K
+[01m[K/home/chunxin/PF/kinodynamic_frontend/src/uav_simulator/Utils/pose_utils/src/pose_utils.cpp:448:10:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kwz[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  448 |   double [01;35m[Kwz[m[K = U(5);
+      |          [01;35m[K^~[m[K
+[100%] [32m[1mLinking CXX shared library /home/chunxin/PF/kinodynamic_frontend/devel/.private/pose_utils/lib/libpose_utils.so[0m
+[100%] Built target pose_utils

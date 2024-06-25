@@ -195,7 +195,7 @@ void KinodynRRTStarPlanner::initPlanner(ros::NodeHandle &nh, shared_ptr<SDFMap> 
   nh.param("planner/origin/y", map_origin_(1), 0.0);
   nh.param("planner/origin/z", map_origin_(2), 0.0);
 
-  nh.param("planner/origin/z", step_size_, 1.0);
+  nh.param("planner/step_size_", step_size_, 0.5);
 
   ROS_INFO("------------Kinodynamic RRT Star Parameter List------------");
   ROS_INFO("goal_tolerance:%.4fm", goal_tolerance);
@@ -261,6 +261,8 @@ void KinodynRRTStarPlanner::initPlanner(ros::NodeHandle &nh, shared_ptr<SDFMap> 
 // that closest to the goal.
 bool KinodynRRTStarPlanner::searchTraj(Eigen::Vector3d start_pos, Eigen::Vector3d start_vel, Eigen::Vector3d start_acc, Eigen::Vector3d end_pos)
 {
+  
+  end_pos(2) = 0.2;
   goal_->setState(end_pos, Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero());
   // nothing update
   if (!map_->hasDepthObservation())
@@ -283,7 +285,7 @@ bool KinodynRRTStarPlanner::searchTraj(Eigen::Vector3d start_pos, Eigen::Vector3
   while (!reach_goal_)
   {
     samplePos();
-    // Eigen::Vector3d end = sample_node_->getState().pos;
+    Eigen::Vector3d end = sample_node_->getState().pos;
     // ROS_INFO("---------------- new pos(%.4f, %.4f, %.4f) is sampled ----------------", end(0), end(1), end(2));
     // steer()
     double min_cost = StateNode::kErrorCost;
@@ -298,6 +300,11 @@ bool KinodynRRTStarPlanner::searchTraj(Eigen::Vector3d start_pos, Eigen::Vector3
     {
       // from near to sample_node
       cost = sample_node_->calcOptimalTrajWithPartialState((*near)->getState(), T, coeff);
+      // print each row of coeff
+      // for (int i = 0; i < 6; i++)
+      // {
+      //   ROS_INFO("coeff[%d]: %.4f, %.4f, %.4f", i, coeff(i, 0), coeff(i, 1), coeff(i, 2));
+      // }
       if (checkCollision(coeff, T) && cost < min_cost)
       {
         min_cost = cost;
@@ -309,16 +316,16 @@ bool KinodynRRTStarPlanner::searchTraj(Eigen::Vector3d start_pos, Eigen::Vector3
 
     if (parent && min_cost < StateNode::kErrorCost)
     {
-      // Eigen::Vector3d start = parent->getState().pos;
-      // ROS_WARN("Find a collision free path from (%.4f, %.4f, %.4f) to (%.4f, %.4f, %.4f) with time:%.4fs and cost:%.4f!", start(0), start(1), start(2), end(0), end(1), end(2), optimal_T, min_cost);
+      Eigen::Vector3d start = parent->getState().pos;
+      ROS_WARN("Find a collision free path from (%.4f, %.4f, %.4f) to (%.4f, %.4f, %.4f) with time:%.4fs and cost:%.4f!", start(0), start(1), start(2), end(0), end(1), end(2), optimal_T, min_cost);
       sample_node_->setParent(parent, min_cost, optimal_T, optimal_coeff);
       sample_node_->setGoal(goal_->getState());
       updateNode(sample_node_);
     }
     else
     {
-      // Eigen::Vector3d pos = sample_node_->getState().pos;
-      // ROS_WARN("Can not find a feasiable free path from pos:(%.4f, %.4f, %.4f), this state will be dropped!", pos(0), pos(1), pos(2));
+      Eigen::Vector3d pos = sample_node_->getState().pos;
+      ROS_WARN("Can not find a feasiable free path from pos:(%.4f, %.4f, %.4f), this state will be dropped!", pos(0), pos(1), pos(2));
       continue;
     }
 
@@ -331,9 +338,9 @@ bool KinodynRRTStarPlanner::searchTraj(Eigen::Vector3d start_pos, Eigen::Vector3
       if (checkCollision(coeff, T) && cost + sample_node_->getCost() < (*near)->getCost())
       {
         (*near)->setParent(sample_node_, cost, T, coeff);
-        // Eigen::Vector3d start = sample_node_->getState().pos;
-        // end = (*near)->getState().pos;
-        // ROS_WARN("rewrite a path from (%.4f, %.4f, %.4f) to (%.4f, %.4f, %.4f) with time:%.4fs and cost:%.4f!", start(0), start(1), start(2), end(0), end(1), end(2), T, cost);
+        Eigen::Vector3d start = sample_node_->getState().pos;
+        end = (*near)->getState().pos;
+        ROS_WARN("rewrite a path from (%.4f, %.4f, %.4f) to (%.4f, %.4f, %.4f) with time:%.4fs and cost:%.4f!", start(0), start(1), start(2), end(0), end(1), end(2), T, cost);
       }
     }
 
@@ -345,7 +352,7 @@ bool KinodynRRTStarPlanner::searchTraj(Eigen::Vector3d start_pos, Eigen::Vector3
       retrieveTraj(goal_);
     }
 
-    // reach_goal_ = checkGoal(sample_node_->getState().pos, goal_->getState().pos);
+    reach_goal_ = checkGoal(sample_node_->getState().pos, goal_->getState().pos);
     visTrajLib();
   }
 
@@ -359,29 +366,58 @@ bool KinodynRRTStarPlanner::searchTraj(Eigen::Vector3d start_pos, Eigen::Vector3
 void KinodynRRTStarPlanner::samplePos()
 {
   int collision_flag = 1;
-  Eigen::Vector3d sample_pos;
-  Eigen::Vector3d near_pos;
+  Eigen::Vector3d sample_state;
+  Eigen::Vector3d near_state;
+  double sample_theta;
   kdres *nearest_node;
 
   while (collision_flag == 1)
   {
     // sample randomly
-    sample_pos = Eigen::Vector3d::Random();
-    sample_pos = map_size_ * sample_pos + map_origin_;
+    sample_state = Eigen::Vector3d::Random();
+    sample_state(0) = map_size_(0,0)*sample_state(0)+map_origin_(0);
+    sample_state(1) = map_size_(1,1)*sample_state(1)+map_origin_(1);
+    // -PI to PI sample randomly
+    sample_state(2) = M_PI*sample_state(2);
 
-    double pos[3] = {sample_pos(0), sample_pos(1), sample_pos(2)};
+    double pos[3] = {sample_state(0), sample_state(1), sample_state(2)};
+    // double pos[3] = {sample_pos(0), sample_pos(1), sample_theta};
     nearest_node = kd_nearest(kd_tree, pos);
-    near_pos = ((StateNode::Ptr)kd_res_item_data(nearest_node))->getState().pos;
+    near_state = ((StateNode::Ptr)kd_res_item_data(nearest_node))->getState().pos;
 
-    // ROS_INFO("nearest_pos(%.4f, %.4f, %.4f)\t random_sample(%.4f, %.4f, %.4f)", near_pos(0), near_pos(0), near_pos(0), sample_pos(0), sample_pos(0), sample_pos(0));
-    sample_pos = (sample_pos - near_pos).normalized() * step_size_ + near_pos;
-    // ROS_INFO("final sampled pos(%.4f, %.4f, %.4f)", sample_pos(0), sample_pos(0), sample_pos(0));
+    // ROS_INFO("nearest_pos(%.4f, %.4f, %.4f)\t random_sample(%.4f, %.4f, %.4f)", near_pos(0), near_pos(1), near_pos(2), sample_pos(0), sample_pos(1), sample_pos(2));
+    Eigen::Vector2d sample_pos_2d;
+    sample_pos_2d << sample_state(0), sample_state(1);
+    Eigen::Vector2d near_pos_2d;
+    near_pos_2d << near_state(0), near_state(1);
+    sample_pos_2d  = (sample_pos_2d - near_pos_2d).normalized() * step_size_ + near_pos_2d;
+    sample_state = Eigen::Vector3d(sample_pos_2d(0), sample_pos_2d(1), sample_state(2));
+    // ROS_INFO("final sampled pos(%.4f, %.4f, %.4f)", sample_pos(0), sample_pos(1), sample_pos(2));
+
+    //use two circle model
+    Eigen::Vector3d pos_front;
+    Eigen::Vector3d pos_back;
+
+    //r is sqrt of (1/4x)^2 (1/2y)^2
+    double x = 0.2;
+    double y = 0.1;
+    double r = sqrt(x * x + y * y);
+    // r = 0.1;
+    double hight = 0.2;
+
+    //pos_front and pos_back are the center of two circles,they are on the same line which pass through (pos(0),pos(1)),and the angle between the line and x axis is pos(2)
+
+    pos_front(0) = sample_state[0] + r * cos(sample_state[2]);
+    pos_front(1) = sample_state[1] + r * sin(sample_state[2]);
+    pos_front(2) = hight;
+    pos_back(0) =  sample_state[0] - r * cos(sample_state[2]);
+    pos_back(1) =  sample_state[1] - r * sin(sample_state[2]);
+    pos_back(2) = hight;
 
     // check if sample in obscale
-    collision_flag = map_->getInflateOccupancy(sample_pos);
+    collision_flag = map_->getInflateOccupancy(pos_front) || map_->getInflateOccupancy(pos_back);
   }
-
-  sample_node_ = new StateNode(sample_pos);
+  sample_node_ = new StateNode(sample_state);
 }
 
 bool KinodynRRTStarPlanner::checkCollision(Eigen::Matrix<double, 6, 3> coeff, double T)
@@ -398,14 +434,44 @@ bool KinodynRRTStarPlanner::checkCollision(Eigen::Matrix<double, 6, 3> coeff, do
 
     pt.x = pos(0);
     pt.y = pos(1);
-    pt.z = pos(2);
+    pt.z = 0.2;
+    // pt.z = pos(2);
+    //publish the node into rviz
+    vis_sample_trajectory_.points.push_back(pt);
+
+    //use two circle model
+    Eigen::Vector3d pos_front;
+    Eigen::Vector3d pos_back;
+
+    //r is sqrt of (1/4x)^2 (1/2y)^2
+    double x = 0.2;
+    double y = 0.1;
+    double r = sqrt(x * x + y * y);
+    // r = 0.1;
+    double hight = 0.2;
+
+    //pos_front and pos_back are the center of two circles,they are on the same line which pass through (pos(0),pos(1)),and the angle between the line and x axis is pos(2)
+
+    pos_front(0) = pos[0] + r * cos(pos[2]);
+    pos_front(1) = pos[1] + r * sin(pos[2]);
+    pos_front(2) = hight;
+    pos_back(0) =  pos[0] - r * cos(pos[2]);
+    pos_back(1) =  pos[1] - r * sin(pos[2]);
+    pos_back(2) = hight;
 
     relative_pos = pos - map_origin_;
-    if (fabs(relative_pos(0)) > map_size_(0, 0) || fabs(relative_pos(1)) > map_size_(1, 1) || fabs(relative_pos(2)) > map_size_(2, 2) || map_->getInflateOccupancy(pos) == 1)
+    //print pos relative_pos and pos_front and pos_back
+    // ROS_INFO("pos(%.4f, %.4f, %.4f)\t relative_pos(%.4f, %.4f, %.4f)\t pos_front(%.4f, %.4f, %.4f)\t pos_back(%.4f, %.4f, %.4f)", pos(0), pos(1), pos(2), relative_pos(0), relative_pos(1), relative_pos(2), pos_front(0), pos_front(1), pos_front(2), pos_back(0), pos_back(1), pos_back(2));
+    // //print map_size and ap_->getInflateOccupancy(pos_front) and map_->getInflateOccupancy(pos_back)
+    // ROS_INFO("map_size(%.4f, %.4f, %.4f)\t map_->getInflateOccupancy(pos_front):%d\t map_->getInflateOccupancy(pos_back):%d", map_size_(0, 0), map_size_(1, 1), map_size_(2, 2), map_->getInflateOccupancy(pos_front), map_->getInflateOccupancy(pos_back));
+    //print fabs(relative_pos(0)) > map_size_(0, 0),fabs(relative_pos(1)) > map_size_(1, 1),map_->getInflateOccupancy(pos_front),map_->getInflateOccupancy(pos_back)
+    // ROS_INFO("fabs(relative_pos(0)) > map_size_(0, 0):%d\t fabs(relative_pos(1)) > map_size_(1, 1):%d\t map_->getInflateOccupancy(pos_front):%d\t map_->getInflateOccupancy(pos_back):%d", fabs(relative_pos(0)) > map_size_(0, 0), fabs(relative_pos(1)) > map_size_(1, 1), map_->getInflateOccupancy(pos_front), map_->getInflateOccupancy(pos_back));
+    if (fabs(relative_pos(0)) > map_size_(0, 0) || fabs(relative_pos(1)) > map_size_(1, 1) || map_->getInflateOccupancy(pos_front) || map_->getInflateOccupancy(pos_back))
     {
       return false;
     }
   }
+  ROS_INFO("Collision check passed!");
   return true;
 }
 
@@ -433,6 +499,7 @@ void KinodynRRTStarPlanner::nearestBackwardNeighbors()
     if (neighbor != sample_node_)
     {
       neighbors_.push_back(neighbor);
+      // ROS_INFO("ADD NEW NEIGHBOR Backward!");
     }
 
     kd_res_next(set);
@@ -496,7 +563,8 @@ void KinodynRRTStarPlanner::visTrajLib()
 
       pt.x = pos(0);
       pt.y = pos(1);
-      pt.z = pos(2);
+      pt.z = 0.2;
+      // pt.z = pos(2);
       vis_sample_trajectory_.points.push_back(pt);
     }
 
@@ -506,7 +574,8 @@ void KinodynRRTStarPlanner::visTrajLib()
     pos = coeff.transpose() * nature_bais;
     pt.x = pos(0);
     pt.y = pos(1);
-    pt.z = pos(2);
+    pt.z = 0.2;
+    // pt.z = pos(2);
     vis_sample_trajectory_.points.push_back(pt);
     vis_sample_points_.points.push_back(pt);
     vis_trajectorylib_.markers.push_back(vis_sample_trajectory_);
@@ -529,7 +598,8 @@ void KinodynRRTStarPlanner::visTrajLib()
 
         pt.x = pos(0);
         pt.y = pos(1);
-        pt.z = pos(2);
+        pt.z = 0.2;
+        // pt.z = pos(2);
         vis_final_trajectory_.points.push_back(pt);
       }
       nature_bais << 1.0, T, T * T, T * T * T,

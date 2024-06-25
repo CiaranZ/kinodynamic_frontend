@@ -1,0 +1,4 @@
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/rviz_plugins/cmake/rviz_pluginsConfig.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/rviz_plugins/cmake/rviz_pluginsConfig-version.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/librviz_plugins.so
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/pkgconfig/rviz_plugins.pc

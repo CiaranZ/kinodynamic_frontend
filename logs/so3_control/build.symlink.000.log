@@ -1,0 +1,6 @@
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/so3_control/cmake/so3_controlConfig.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/share/so3_control/cmake/so3_controlConfig-version.cmake
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/libSO3Control.so
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/libso3_control_nodelet.so
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/so3_control/control_example
+Symlinking /home/chunxin/PF/kinodynamic_frontend/devel/lib/pkgconfig/so3_control.pc
