@@ -391,17 +391,18 @@ void KinodynRRTStarPlanner::samplePos()
     Eigen::Vector2d near_pos_2d;
     near_pos_2d << near_state(0), near_state(1);
     sample_pos_2d  = (sample_pos_2d - near_pos_2d).normalized() * step_size_ + near_pos_2d;
+    sample_state(2) = (sample_state(2) - near_state(2)) * step_size_ + near_state(2);
     sample_state = Eigen::Vector3d(sample_pos_2d(0), sample_pos_2d(1), sample_state(2));
     // ROS_INFO("final sampled pos(%.4f, %.4f, %.4f)", sample_pos(0), sample_pos(1), sample_pos(2));
 
     //use two circle model
     Eigen::Vector3d pos_front;
     Eigen::Vector3d pos_back;
-
+    vector<Eigen::Vector3d> pos_interpolate;
     //r is sqrt of (1/4x)^2 (1/2y)^2
-    double x = 0.2;
+    double x = 0.2/2;
     double y = 0.1;
-    double r = sqrt(x * x + y * y);
+    double r = x;
     // r = 0.1;
     double hight = 0.2;
 
@@ -413,9 +414,31 @@ void KinodynRRTStarPlanner::samplePos()
     pos_back(0) =  sample_state[0] - r * cos(sample_state[2]);
     pos_back(1) =  sample_state[1] - r * sin(sample_state[2]);
     pos_back(2) = hight;
+    // / interpolate between the pos_front and pos_back to obtain pos_interpolate
+    for (double i = 0.0; i < 1.0; i += 0.1)
+    {
+      Eigen::Vector3d pos_temp;
+      pos_temp(0) = pos_front(0) * i + pos_back(0) * (1 - i);
+      pos_temp(1) = pos_front(1) * i + pos_back(1) * (1 - i);
+      pos_temp(2) = pos_front(2) * i + pos_back(2) * (1 - i);
+      pos_interpolate.push_back(pos_temp);
+    }
 
+    // relative_pos = pos - map_origin_;
+    // check collision:
+    int flag = 0;
+    for (auto pos_temp : pos_interpolate)
+    {
+      Eigen::Vector3d relative_pos_temp = pos_temp - map_origin_;
+      if (fabs(relative_pos_temp(0)) > map_size_(0, 0) || fabs(relative_pos_temp(1)) > map_size_(1, 1) || map_->getInflateOccupancy(pos_temp))
+      {
+        flag = 1;
+        break;
+      }
+    }
     // check if sample in obscale
-    collision_flag = map_->getInflateOccupancy(pos_front) || map_->getInflateOccupancy(pos_back);
+    collision_flag = map_->getInflateOccupancy(pos_front) || map_->getInflateOccupancy(pos_back) || flag;
+    
   }
   sample_node_ = new StateNode(sample_state);
 }
@@ -426,8 +449,10 @@ bool KinodynRRTStarPlanner::checkCollision(Eigen::Matrix<double, 6, 3> coeff, do
   Eigen::Vector3d pos, relative_pos;
   geometry_msgs::Point pt;
 
-  for (double t = 0.0; t < T; t += resolution)
+  // for (double t = 0.0; t < T; t += resolution)
+  for (double i = 0.0; i < 1.0; i += 0.01)
   {
+    double t = T * i;
     nature_bais << 1.0, t, t * t, t * t * t,
         t * t * t * t, t * t * t * t * t;
     pos = coeff.transpose() * nature_bais;
@@ -442,11 +467,11 @@ bool KinodynRRTStarPlanner::checkCollision(Eigen::Matrix<double, 6, 3> coeff, do
     //use two circle model
     Eigen::Vector3d pos_front;
     Eigen::Vector3d pos_back;
-
+    vector<Eigen::Vector3d> pos_interpolate;
     //r is sqrt of (1/4x)^2 (1/2y)^2
-    double x = 0.2;
+    double x = 0.2/2;
     double y = 0.1;
-    double r = sqrt(x * x + y * y);
+    double r = x;
     // r = 0.1;
     double hight = 0.2;
 
@@ -458,15 +483,34 @@ bool KinodynRRTStarPlanner::checkCollision(Eigen::Matrix<double, 6, 3> coeff, do
     pos_back(0) =  pos[0] - r * cos(pos[2]);
     pos_back(1) =  pos[1] - r * sin(pos[2]);
     pos_back(2) = hight;
+    for (double i = 0.0; i < 1.0; i += 0.1)
+    {
+      Eigen::Vector3d pos_temp;
+      pos_temp(0) = pos_front(0) * i + pos_back(0) * (1 - i);
+      pos_temp(1) = pos_front(1) * i + pos_back(1) * (1 - i);
+      pos_temp(2) = pos_front(2) * i + pos_back(2) * (1 - i);
+      pos_interpolate.push_back(pos_temp);
+    }
 
-    relative_pos = pos - map_origin_;
+    // relative_pos = pos - map_origin_;
+    // check collision:
+    int flag = 0;
+    for (auto pos_temp : pos_interpolate)
+    {
+      Eigen::Vector3d relative_pos_temp = pos_temp - map_origin_;
+      if (map_->getInflateOccupancy(pos_temp))
+      {
+        flag = 1;
+        break;
+      }
+    }
     //print pos relative_pos and pos_front and pos_back
     // ROS_INFO("pos(%.4f, %.4f, %.4f)\t relative_pos(%.4f, %.4f, %.4f)\t pos_front(%.4f, %.4f, %.4f)\t pos_back(%.4f, %.4f, %.4f)", pos(0), pos(1), pos(2), relative_pos(0), relative_pos(1), relative_pos(2), pos_front(0), pos_front(1), pos_front(2), pos_back(0), pos_back(1), pos_back(2));
     // //print map_size and ap_->getInflateOccupancy(pos_front) and map_->getInflateOccupancy(pos_back)
     // ROS_INFO("map_size(%.4f, %.4f, %.4f)\t map_->getInflateOccupancy(pos_front):%d\t map_->getInflateOccupancy(pos_back):%d", map_size_(0, 0), map_size_(1, 1), map_size_(2, 2), map_->getInflateOccupancy(pos_front), map_->getInflateOccupancy(pos_back));
     //print fabs(relative_pos(0)) > map_size_(0, 0),fabs(relative_pos(1)) > map_size_(1, 1),map_->getInflateOccupancy(pos_front),map_->getInflateOccupancy(pos_back)
     // ROS_INFO("fabs(relative_pos(0)) > map_size_(0, 0):%d\t fabs(relative_pos(1)) > map_size_(1, 1):%d\t map_->getInflateOccupancy(pos_front):%d\t map_->getInflateOccupancy(pos_back):%d", fabs(relative_pos(0)) > map_size_(0, 0), fabs(relative_pos(1)) > map_size_(1, 1), map_->getInflateOccupancy(pos_front), map_->getInflateOccupancy(pos_back));
-    if (fabs(relative_pos(0)) > map_size_(0, 0) || fabs(relative_pos(1)) > map_size_(1, 1) || map_->getInflateOccupancy(pos_front) || map_->getInflateOccupancy(pos_back))
+    if (flag)
     {
       return false;
     }
