@@ -263,7 +263,7 @@ void JPSPlanner<Dim>::publish_samplepath(){
         pt.x = sample_path_[i](0);
         pt.y = sample_path_[i](1);
         pt.z = sample_path_[i](2);
-        std::cout << "path point" <<  pt.x << " " << pt.y << " " << pt.z << std::endl;
+        // std::cout << "path point" <<  pt.x << " " << pt.y << " " << pt.z << std::endl;
         grid_vis.points.push_back(pt);
     }
     sample_path_jps_pub_.publish(grid_vis);

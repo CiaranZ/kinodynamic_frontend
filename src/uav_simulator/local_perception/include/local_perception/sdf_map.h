@@ -69,6 +69,7 @@ public:
   inline int getOccupancy(Eigen::Vector3d pos);
   inline int getOccupancy(Eigen::Vector3i id);
   int getInflateOccupancy(Eigen::Vector3d pos);
+  int getInflateOccupancy(Eigen::Vector3i id);
 
   // distance field management
   inline double getDistance(Eigen::Vector3d pos);

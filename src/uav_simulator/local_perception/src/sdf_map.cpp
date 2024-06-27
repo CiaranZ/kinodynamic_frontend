@@ -101,6 +101,17 @@ int SDFMap::getInflateOccupancy(Eigen::Vector3d pos)
              0;
 }
 
+int SDFMap::getInflateOccupancy(Eigen::Vector3i id)
+{
+  if (id(0) < 0 || id(0) >= grid_size(0) || id(1) < 0 || id(1) >= grid_size(1) || id(2) < 0 || id(2) >= grid_size(2))
+    return -1;
+
+  return occupancy_buffer_inflate_[id(0) * grid_size(1) * grid_size(2) + id(1) * grid_size(2) + id(2)] >
+                 min_occupancy_log_ ?
+             1 :
+             0;
+}
+
 inline int SDFMap::getOccupancy(Eigen::Vector3i id)
 {
   if (id(0) < 0 || id(0) >= grid_size(0) || id(1) < 0 || id(1) >= grid_size(1) || id(2) < 0 || id(2) >= grid_size(2))

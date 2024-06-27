@@ -4,6 +4,7 @@
 #include <ros/ros.h>
 #include <nav_msgs/Path.h>
 #include <visualization_msgs/Marker.h>
+#include <sensor_msgs/PointCloud2.h>
 
 #include "local_perception/sdf_map.h"
 #include "jps_planner/jps_planner.h"
@@ -14,6 +15,7 @@ shared_ptr<SDFMap> sdf_map;
 std::unique_ptr<JPSPlanner3D> planner_ptr;
 nav_msgs::Odometry odom;
 ros::Publisher vis_traj_pub;
+ros::Publisher vis_debug;
 
 
 void recvGoalCallback(const geometry_msgs::PoseStamped &wp);
@@ -30,6 +32,7 @@ int main(int argc, char **argv)
     ros::Subscriber pts_sub = nh.subscribe("/test_planner/goal", 1, recvGoalCallback);
     ros::Subscriber odom_sub = nh.subscribe("/test_planner/odom", 1, recvOdomCallback);
     vis_traj_pub = nh.advertise<visualization_msgs::Marker>("RRTStar_path_vis", 1);
+    vis_debug = nh.advertise<sensor_msgs::PointCloud2>("debug_vis", 1);
 
     sdf_map.reset(new SDFMap);
     sdf_map->initMap(nh);
@@ -69,6 +72,10 @@ void convertSDFtoMapUtil(std::shared_ptr<JPS::MapUtil<3>>& map_util)
     temp_map.resize(size_.x() * size_.y() * size_.z());
     std::cout << "size: " << size_.transpose() << std::endl;
     // get the map
+
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+    pcl::PointXYZ pt;
+
     for (int z = 0; z < size_.z(); z++)
     {
         for (int y = 0; y < size_.y(); y++)
@@ -76,13 +83,45 @@ void convertSDFtoMapUtil(std::shared_ptr<JPS::MapUtil<3>>& map_util)
             for (int x = 0; x < size_.x(); x++)
             {
                 Eigen::Vector3d pos = origin + Eigen::Vector3d(x * resolution, y * resolution, z * resolution);
-                // if (sdf_map->getInflateOccupancy(pos) == 0) {
-                //     std::cout << "pos: " << pos.transpose() << " "  << sdf_map->getInflateOccupancy(pos) << std::endl;
+                // if(pos.x() < min_pos_x) min_pos_x = pos.x();
+                // if(pos.y() < min_pos_y) min_pos_y = pos.y();
+                // if(pos.z() < min_pos_z) min_pos_z = pos.z();
+                // if(pos.x() > max_pos_x) max_pos_x = pos.x();
+                // if(pos.y() > max_pos_y) max_pos_y = pos.y();
+                // if(pos.z() > max_pos_z) max_pos_z = pos.z();
+                // temp_map[x + y * size_.x() + z * size_.x() * size_.y()] = sdf_map->getInflateOccupancy(pos);
+                Eigen::Vector3i id = {x, y, z};
+                int occ_id = sdf_map->getInflateOccupancy(id);
+                int occ_pos = sdf_map->getInflateOccupancy(pos);
+                // if(occ_id != occ_pos){
+                //     cnt++;
+                //     std::cout << "id: " << occ_id << " pos: " << occ_pos << " cnt " << cnt << std::endl;
                 // }
-                temp_map[x + y * size_.x() + z * size_.x() * size_.y()] = sdf_map->getInflateOccupancy(pos);
+                if(occ_id > 0 || pos.z() <= 0.15 || pos.z() >= 0.25) occ_id=100;
+                temp_map[x + y * size_.x() + z * size_.x() * size_.y()] = occ_id;
+                if (occ_id > 0){
+                    pt.x = pos.x();
+                    pt.y = pos.y();
+                    pt.z = pos.z();
+                    if(pos.z() <= 0.15 || pos.z() >= 0.25)
+                        continue;
+                    cloud.points.push_back(pt);
+                }
             }
         }
     }
+    std::cout << "points size " << cloud.points.size() << std::endl;
+    cloud.width = cloud.points.size();
+    cloud.height = 1;
+    cloud.is_dense = true;
+    cloud.header.frame_id = "world";
+    sensor_msgs::PointCloud2 cloud_msg;
+
+    pcl::toROSMsg(cloud, cloud_msg);
+    vis_debug.publish(cloud_msg);
+
+    // std::cout << "min_pos_x: " << min_pos_x << " min_pos_y: " << min_pos_y << " min_pos_z: " << min_pos_z << std::endl;
+    // std::cout << "max_pos_x: " << max_pos_x << " max_pos_y: " << max_pos_y << " max_pos_z: " << max_pos_z << std::endl;
 
     map_util->setMap(origin_, size_, temp_map, resolution);
 }
@@ -113,8 +152,8 @@ void recvGoalCallback(const geometry_msgs::PoseStamped &wp)
     
     if(valid_jps){
         auto path_jps = planner_ptr->getPath();
-        for(const auto& it: path_jps)
-            std::cout << it.transpose() << std::endl;
+        // for(const auto& it: path_jps)
+        //     std::cout << it.transpose() << std::endl;
     
         planner_ptr->publishAll();
     }
